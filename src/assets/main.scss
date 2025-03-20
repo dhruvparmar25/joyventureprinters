@@ -1,0 +1,78 @@
+@use "sass:color";
+
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #e74c3c;
+  --accent-color: #3498db;
+  --text-color: #333;
+  --light-bg: #f8f9fa;
+  --white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+
+  &-primary {
+    background-color: var(--primary-color);
+    color: var(--white);
+
+    &:hover {
+      background-color: color.adjust(#2c3e50, $lightness: -10%);
+    }
+  }
+
+  &-secondary {
+    background-color: var(--secondary-color);
+    color: var(--white);
+
+    &:hover {
+      background-color: color.adjust(#e74c3c, $lightness: -10%);
+    }
+  }
+}
+
+.section {
+  padding: 80px 0;
+  
+  &-title {
+    text-align: center;
+    margin-bottom: 40px;
+    
+    h2 {
+      font-size: 2.5rem;
+      color: var(--primary-color);
+      margin-bottom: 15px;
+    }
+    
+    p {
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+} 
