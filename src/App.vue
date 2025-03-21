@@ -5,17 +5,19 @@
         <router-link to="/" class="logo">
           JoyVenture Printers
         </router-link>
-        <button class="mobile-menu-toggle" @click="isMenuOpen = !isMenuOpen">
-          <i :class="['fas', isMenuOpen ? 'fa-times' : 'fa-bars']"></i>
+        
+        <button class="mobile-menu-toggle" @click="toggleMenu" aria-label="Toggle menu">
+          <i :class="isMenuOpen ? 'fas fa-times' : 'fas fa-bars'"></i>
         </button>
+
         <div :class="['nav-links', { 'is-open': isMenuOpen }]">
-          <router-link to="/" class="nav-link" @click="isMenuOpen = false">Home</router-link>
-          <router-link to="/about" class="nav-link" @click="isMenuOpen = false">About</router-link>
-          <router-link to="/services" class="nav-link" @click="isMenuOpen = false">Services</router-link>
-          <router-link to="/portfolio" class="nav-link" @click="isMenuOpen = false">Portfolio</router-link>
-          <router-link to="/contact" class="nav-link" @click="isMenuOpen = false">Contact</router-link>
-          <router-link to="/faq" class="nav-link" @click="isMenuOpen = false">FAQ</router-link>
-          <router-link to="/blog" class="nav-link" @click="isMenuOpen = false">Blog</router-link>
+          <router-link to="/" class="nav-link" @click="closeMenu">Home</router-link>
+          <router-link to="/about" class="nav-link" @click="closeMenu">About</router-link>
+          <router-link to="/services" class="nav-link" @click="closeMenu">Services</router-link>
+          <router-link to="/portfolio" class="nav-link" @click="closeMenu">Portfolio</router-link>
+          <router-link to="/contact" class="nav-link" @click="closeMenu">Contact</router-link>
+          <router-link to="/faq" class="nav-link" @click="closeMenu">FAQ</router-link>
+          <router-link to="/blog" class="nav-link" @click="closeMenu">Blog</router-link>
         </div>
       </div>
     </nav>
@@ -25,39 +27,14 @@
         <component :is="Component" />
       </transition>
     </router-view>
-
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>JoyVenture Printers</h3>
-            <p>Your trusted partner for all printing needs</p>
-          </div>
-          <div class="footer-section">
-            <h3>Quick Links</h3>
-            <router-link to="/services">Services</router-link>
-            <router-link to="/portfolio">Portfolio</router-link>
-            <router-link to="/contact">Contact</router-link>
-          </div>
-          <div class="footer-section">
-            <h3>Contact Info</h3>
-            <p>Email: info@joyventureprinters.com</p>
-            <p>Phone: +1234567890</p>
-            <p>Address: Your Business Address</p>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <p>&copy; {{ new Date().getFullYear() }} JoyVenture Printers. All rights reserved.</p>
-        </div>
-      </div>
-    </footer>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-
 const isMenuOpen = ref(false)
+const toggleMenu = () => { isMenuOpen.value = !isMenuOpen.value }
+const closeMenu = () => { isMenuOpen.value = false }
 </script>
 
 <style lang="scss">
@@ -69,7 +46,7 @@ const isMenuOpen = ref(false)
 
 .navbar {
   background-color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: fixed;
   width: 100%;
   top: 0;
@@ -88,49 +65,40 @@ const isMenuOpen = ref(false)
     font-weight: 700;
     color: #2563eb;
     text-decoration: none;
-    transition: color 0.3s ease;
-
-    &:hover {
-      color: #1d4ed8;
-    }
   }
 
   .mobile-menu-toggle {
     display: none;
     background: none;
     border: none;
-    color: #2563eb;
-    font-size: 1.5rem;
+    padding: 8px;
     cursor: pointer;
-    padding: 0.5rem;
-    transition: all 0.3s ease;
+    color: #2563eb;
+    z-index: 1002;
+    
+    i {
+      font-size: 24px;
+    }
 
     &:hover {
-      color: #1d4ed8;
-      transform: scale(1.1);
+      color: darken(#2563eb, 10%);
     }
   }
 
   .nav-links {
     display: flex;
     gap: 2rem;
+    align-items: center;
 
     .nav-link {
       color: #4b5563;
       text-decoration: none;
       font-weight: 500;
       padding: 0.5rem 1rem;
-      border-radius: 0.375rem;
-      transition: all 0.3s ease;
+      transition: color 0.3s ease;
 
       &:hover {
         color: #2563eb;
-        background-color: #f3f4f6;
-      }
-
-      &.router-link-active {
-        color: #2563eb;
-        background-color: #eff6ff;
       }
     }
   }
@@ -138,102 +106,51 @@ const isMenuOpen = ref(false)
   @media (max-width: 992px) {
     .mobile-menu-toggle {
       display: block;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #f3f4f6;
+      border-radius: 8px;
+      padding: 12px;
+      
+      i {
+        display: block;
+        line-height: 1;
+      }
     }
 
     .nav-links {
       display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
       flex-direction: column;
-      gap: 0;
-      background-color: #ffffff;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      padding: 0.5rem 0;
-      text-align: center;
-      border-bottom-left-radius: 0.5rem;
-      border-bottom-right-radius: 0.5rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.98);
+      padding: 80px 20px 20px;
+      gap: 1rem;
+      align-items: center;
+      justify-content: flex-start;
+      z-index: 1001;
 
       &.is-open {
         display: flex;
-        animation: slideDown 0.3s ease-out forwards;
       }
 
       .nav-link {
+        font-size: 1.2rem;
         padding: 1rem;
-        display: block;
-        border-radius: 0;
-        border-bottom: 1px solid #e5e7eb;
-        margin: 0;
-        transition: all 0.3s ease;
+        width: 100%;
+        text-align: center;
+        border-radius: 8px;
 
         &:hover {
-          color: #2563eb;
           background-color: #f3f4f6;
         }
-
-        &.router-link-active {
-          color: #2563eb;
-          background-color: #eff6ff;
-        }
-
-        &:last-child {
-          border-bottom: none;
-        }
       }
     }
-  }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.footer {
-  background-color: var(--primary-color);
-  color: var(--white);
-  padding: 4rem 0 2rem;
-  margin-top: auto;
-
-  .footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .footer-section {
-    h3 {
-      margin-bottom: 1rem;
-      font-size: 1.2rem;
-    }
-
-    a {
-      color: var(--white);
-      text-decoration: none;
-      display: block;
-      margin-bottom: 0.5rem;
-      opacity: 0.8;
-      transition: opacity 0.3s ease;
-
-      &:hover {
-        opacity: 1;
-      }
-    }
-  }
-
-  .footer-bottom {
-    text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255,255,255,0.1);
   }
 }
 
@@ -246,4 +163,4 @@ const isMenuOpen = ref(false)
 .fade-leave-to {
   opacity: 0;
 }
-</style> 
+</style>
